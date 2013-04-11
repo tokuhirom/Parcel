@@ -6,6 +6,7 @@ use utf8;
 use Parcel::Util;
 use File::Path;
 use File::Copy;
+use Parcel::Downloader;
 
 use Moo;
 
@@ -46,6 +47,8 @@ sub create_index {
 
 sub reindex {
     my $self = shift;
+
+    Parcel::Downloader->new(local_mirror => $self->local_mirror)->download();
 
     my $new_mirror = $self->local_mirror . '.new';
 
