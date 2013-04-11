@@ -1,0 +1,98 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use utf8;
+
+use Getopt::Long;
+use File::Path;
+use Pod::Usage;
+use File::Temp qw(tempdir);
+use Log::Minimal;
+use File::Copy;
+use File::Spec::Functions qw(rel2abs catfile);
+use Parse::CPAN::Packages;
+use Kattun;
+
+&main; exit;
+
+sub main {
+    my $subcmd = shift @ARGV || 'help';
+    $subcmd =~ s!-!_!g;
+    my $meth = "CMD_$subcmd";
+    __PACKAGE__->$meth(@ARGV);
+}
+
+sub run {
+    my @args = @_;
+    print "[run] @args\n";
+    system(@args) == 0 or exit;
+}
+
+sub opt_parser {
+    my $p = Getopt::Long::Parser->new(
+        config => [qw(posix_default no_ignore_case auto_help)]
+    );
+}
+
+sub CMD_help {
+    pod2usage(1);
+}
+
+sub CMD_index {
+    my $local_mirror_dir = 'cpan';
+    my $local_dir = tempdir(CLEANUP => 1);
+
+    my $target = '.';
+    opt_parser()->getoptions(
+        target => \$target,
+        'local-mirror' => \$local_mirror_dir,
+    );
+
+    Kattun::Indexer->new(local_mirror => $local_mirror_dir, target => $target)->do_index();
+}
+
+# Download tar balls
+sub CMD_download {
+    my $local_mirror_dir = 'cpan';
+
+    opt_parser()->getoptions(
+        'local-mirror' => \$local_mirror_dir,
+    );
+
+    Kattun::Downloader->new(local_mirror => $local_mirror_dir)->download();
+}
+
+# Install packages from local mirror
+sub CMD_install {
+    my $local = 'local/';
+    my $target = '.';
+    my $local_mirror_dir = 'cpan/';
+    opt_parser()->getoptions(
+        local => \$local,
+        target => \$target,
+        'local-mirror' => \$local_mirror_dir,
+    );
+
+    # Download tar balls
+    Kattun::Downloader->new(local_mirror => $local_mirror_dir)->download();
+
+    # And install it.
+    Kattun::Installer->new(local_mirror => $local_mirror_dir, target => $target, local => $local)->install();
+}
+
+__END__
+
+=head1 NAME
+
+kattun - Yet another CPAN module manager for applications
+
+=head1 SYNOPSIS
+
+    % kattun index cpan/
+
+    % kattun rebuild
+
+    % kattun install
+
+    % kattun update
+
