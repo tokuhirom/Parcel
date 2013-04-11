@@ -1,0 +1,18 @@
+=head1 NAME
+
+Parcel::Tutorial - Tutorial for Parcel
+
+=head1 HOW?
+
+=head2 Create index
+
+    % parcel index
+
+=head2 And make local directory
+
+    % parcel install
+
+=head2 REBUILD?
+
+    % parcell index
+
