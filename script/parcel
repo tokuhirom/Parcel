@@ -6,17 +6,25 @@ use utf8;
 use Getopt::Long;
 use File::Path;
 use Pod::Usage;
-use File::Temp qw(tempdir);
-use Log::Minimal;
-use File::Copy;
-use File::Spec::Functions qw(rel2abs catfile);
-use Parse::CPAN::Packages;
+
 use Parcel;
+use Parcel::Installer;
+use Parcel::Downloader;
+use Parcel::Indexer;
 
 &main; exit;
 
 sub main {
     my $subcmd = shift @ARGV || 'help';
+
+    my $version;
+    my $p = Getopt::Long::Parser->new(
+        config => [qw(posix_default no_ignore_case auto_help pass_through)]
+    );
+    $p->getoptions(
+        'v|version' => sub { $subcmd = 'version' },,
+    );
+
     $subcmd =~ s!-!_!g;
     my $meth = "CMD_$subcmd";
     __PACKAGE__->$meth(@ARGV);
@@ -40,7 +48,6 @@ sub CMD_help {
 
 sub CMD_index {
     my $local_mirror_dir = 'cpan';
-    my $local_dir = tempdir(CLEANUP => 1);
 
     my $target = '.';
     opt_parser()->getoptions(
@@ -49,17 +56,6 @@ sub CMD_index {
     );
 
     Parcel::Indexer->new(local_mirror => $local_mirror_dir, target => $target)->do_index();
-}
-
-# Download tar balls
-sub CMD_download {
-    my $local_mirror_dir = 'cpan';
-
-    opt_parser()->getoptions(
-        'local-mirror' => \$local_mirror_dir,
-    );
-
-    Parcel::Downloader->new(local_mirror => $local_mirror_dir)->download();
 }
 
 # Install packages from local mirror
@@ -88,11 +84,34 @@ parcel - Yet another CPAN module manager for applications
 
 =head1 SYNOPSIS
 
-    % parcel index cpan/
+Create local mirror from CPAN.
 
-    % parcel rebuild
+    % parcel index
+
+And install to local/ from local mirror.
 
     % parcel install
 
-    % parcel update
+=head1 What?
 
+Yet another library manager for Perl applications.
+
+=head1 FAQ
+
+=over 4
+
+=item Should I include tar balls in repository?
+
+Parcel downloads tar balls from CPAN/BackPAN if it does not exist.
+
+=item How do I display diffs from 02packages.details.txt.gz?
+
+Run following command.
+
+    $ git config --global diff.gzcat.textconv gzcat
+
+And put following contents to C<.gitattributes> or C<~/.config/git/attributes>.
+
+    /02packages.details.txt.gz diff=gzcat
+
+=back
