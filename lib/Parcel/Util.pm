@@ -1,4 +1,4 @@
-package Kattun::Util;
+package Parcel::Util;
 use strict;
 use warnings;
 use utf8;

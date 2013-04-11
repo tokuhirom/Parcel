@@ -1,14 +1,14 @@
 # NAME
 
-Kattun - It's new $module
+Parcel - It's new $module
 
 # SYNOPSIS
 
-    use Kattun;
+    use Parcel;
 
 # DESCRIPTION
 
-Kattun is ...
+Parcel is ...
 
 # LICENSE
 

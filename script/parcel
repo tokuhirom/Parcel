@@ -11,7 +11,7 @@ use Log::Minimal;
 use File::Copy;
 use File::Spec::Functions qw(rel2abs catfile);
 use Parse::CPAN::Packages;
-use Kattun;
+use Parcel;
 
 &main; exit;
 
@@ -48,7 +48,7 @@ sub CMD_index {
         'local-mirror' => \$local_mirror_dir,
     );
 
-    Kattun::Indexer->new(local_mirror => $local_mirror_dir, target => $target)->do_index();
+    Parcel::Indexer->new(local_mirror => $local_mirror_dir, target => $target)->do_index();
 }
 
 # Download tar balls
@@ -59,7 +59,7 @@ sub CMD_download {
         'local-mirror' => \$local_mirror_dir,
     );
 
-    Kattun::Downloader->new(local_mirror => $local_mirror_dir)->download();
+    Parcel::Downloader->new(local_mirror => $local_mirror_dir)->download();
 }
 
 # Install packages from local mirror
@@ -74,25 +74,25 @@ sub CMD_install {
     );
 
     # Download tar balls
-    Kattun::Downloader->new(local_mirror => $local_mirror_dir)->download();
+    Parcel::Downloader->new(local_mirror => $local_mirror_dir)->download();
 
     # And install it.
-    Kattun::Installer->new(local_mirror => $local_mirror_dir, target => $target, local => $local)->install();
+    Parcel::Installer->new(local_mirror => $local_mirror_dir, target => $target, local => $local)->install();
 }
 
 __END__
 
 =head1 NAME
 
-kattun - Yet another CPAN module manager for applications
+parcel - Yet another CPAN module manager for applications
 
 =head1 SYNOPSIS
 
-    % kattun index cpan/
+    % parcel index cpan/
 
-    % kattun rebuild
+    % parcel rebuild
 
-    % kattun install
+    % parcel install
 
-    % kattun update
+    % parcel update
 

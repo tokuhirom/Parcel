@@ -1,16 +1,16 @@
-package Kattun;
+package Parcel;
 use strict;
 use warnings;
 use 5.008005;
 our $VERSION = "0.01";
 
-package Kattun::Downloader;
+package Parcel::Downloader;
 use strict;
 use warnings;
 use utf8;
 
 use Parse::CPAN::Packages;
-use Kattun::Util;
+use Parcel::Util;
 
 use Moo;
 
@@ -49,8 +49,8 @@ sub download {
     return 1;
 }
 
-package Kattun::Indexer;
-use Kattun::Util;
+package Parcel::Indexer;
+use Parcel::Util;
 use File::Path;
 use File::Copy;
 
@@ -119,8 +119,8 @@ sub reindex {
         or die "$new_mirror: $!";
 }
 
-package Kattun::Installer;
-use Kattun::Util;
+package Parcel::Installer;
+use Parcel::Util;
 
 use Moo;
 
@@ -150,15 +150,15 @@ __END__
 
 =head1 NAME
 
-Kattun - It's new $module
+Parcel - It's new $module
 
 =head1 SYNOPSIS
 
-    use Kattun;
+    use Parcel;
 
 =head1 DESCRIPTION
 
-Kattun is ...
+Parcel is ...
 
 =head1 LICENSE
 
