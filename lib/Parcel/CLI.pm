@@ -19,6 +19,9 @@ sub run {
     } elsif ($cmd eq 'index') {
         require Parcel::CLI::Index;
         Parcel::CLI::Index->new->run(@args);
+    } elsif ($cmd eq 'exec') {
+        require Parcel::CLI::Exec;
+        Parcel::CLI::Exec->new->run(@args);
     } else {
         require Parcel::CLI::Help;
         Parcel::CLI::Help->new->run(@args);

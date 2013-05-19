@@ -5,6 +5,7 @@ requires 'File::Temp';
 requires 'Getopt::Long';
 requires 'Moo';
 requires 'parent';
+requires 'lib::core::only';
 
 on test => sub {
     requires 'Test::More', 0.98;

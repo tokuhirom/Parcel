@@ -19,7 +19,8 @@ sub run {
     my $target = '.';
     Getopt::Long::Parser->new(
         config => [qw(posix_default no_ignore_case auto_help)]
-    )->getoptions(
+    )->getoptionsfromarray(
+        \@args,
         'v|version' => sub {
             print "Parcel: $Parcel::VERSION\n";
             exit 0;
