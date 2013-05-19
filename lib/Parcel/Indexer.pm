@@ -42,7 +42,7 @@ sub create_index {
         '--installdeps' => $self->target,
     ;
     # And make index file
-    run 'orepan_index.pl', '--repository' => $self->local_mirror;
+    run 'orepan2-indexer', '--repository' => $self->local_mirror;
 }
 
 sub reindex {
@@ -67,7 +67,7 @@ sub reindex {
         '--installdeps' => $self->target,
     ;
     # And make index file
-    run 'orepan_index.pl', '--repository' => $new_mirror;
+    run 'orepan2-indexer', '--repository' => $new_mirror;
 
     my $old_mirror = $self->local_mirror . '.old';
     rmtree $self->local_mirror;

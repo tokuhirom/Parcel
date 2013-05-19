@@ -1,5 +1,5 @@
 requires 'App::cpanminus', '1.6107';
-requires 'OrePAN';
+requires 'OrePAN2';
 requires 'Parse::CPAN::Packages';
 requires 'File::Temp';
 requires 'Getopt::Long';

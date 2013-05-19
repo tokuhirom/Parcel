@@ -46,7 +46,7 @@
             "File::Temp" : "0",
             "Getopt::Long" : "0",
             "Moo" : "0",
-            "OrePAN" : "0",
+            "OrePAN2" : "0",
             "Parse::CPAN::Packages" : "0",
             "parent" : "0",
             "perl" : "5.008005"
