@@ -20,7 +20,7 @@ no Moo;
 sub do_index {
     my $self = shift;
 
-    if (-f File::Spec->catfile($self->local_mirror, 'modules/02packages.details.txt.gz')) {
+    if (-f File::Spec->catfile($self->local_mirror, 'modules/02packages.details.txt')) {
         $self->reindex();
     } else {
         $self->create_index();
