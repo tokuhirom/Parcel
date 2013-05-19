@@ -29,31 +29,15 @@ sub do_index {
 sub create_index {
     my $self = shift;
 
-    # Create local mirror
-    my $tmpdir = tempdir(CLEANUP => 1);
-    run
-        'cpanm',
-        '--notest',
-        '--no-man-pages',
-        '--mirror' => 'http://cpan.metacpan.org/',
-        '--mirror' => 'http://backpan.perl.org/',
-        '--no-skip-satisfied',
-        '-L' => $tmpdir,
-        '--save-dists' => $self->local_mirror,
-        '--installdeps' => $self->target,
-    ;
+    $self->create_local_mirror($self->local_mirror);
+
     # And make index file
     run 'orepan2-indexer', '--repository' => $self->local_mirror;
 }
 
-sub reindex {
-    my $self = shift;
+sub create_local_mirror {
+    my ($self, $save_dists) = @_;
 
-    Parcel::Downloader->new(local_mirror => $self->local_mirror)->download();
-
-    my $new_mirror = $self->local_mirror . '.new';
-
-    # Create local mirror
     my $tmpdir = tempdir(CLEANUP => 1);
     run
         'cpanm',
@@ -64,9 +48,20 @@ sub reindex {
         '--mirror' => 'http://backpan.perl.org/',
         '--no-skip-satisfied',
         '-L' => $tmpdir,
-        '--save-dists' => $new_mirror,
+        '--save-dists' => $save_dists,
         '--installdeps' => $self->target,
     ;
+}
+
+sub reindex {
+    my $self = shift;
+
+    Parcel::Downloader->new(local_mirror => $self->local_mirror)->download();
+
+    my $new_mirror = $self->local_mirror . '.new';
+
+    # Create local mirror
+    $self->create_local_mirror($new_mirror);
     # And make index file
     run 'orepan2-indexer', '--repository' => $new_mirror;
 
