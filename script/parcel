@@ -17,3 +17,6 @@ __END__
     # Make local library directory from 02packages.details.txt
     % parcel install
 
+    # Run the script under the Parcel environment
+    % parcel exec -Ilib -- perl script/foo
+
