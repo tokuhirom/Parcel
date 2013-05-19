@@ -1,14 +1,18 @@
 # NAME
 
-Parcel - It's new $module
-
-# SYNOPSIS
-
-    use Parcel;
+Parcel - Yet another CPAN module dependency manager
 
 # DESCRIPTION
 
-Parcel is ...
+Yet another library manager for Perl applications.
+
+This distribution provides two scripts.
+
+# parcel-index
+
+parcel-index creates 02.patcages.txt.gz file from cpanfile.
+
+# parcel-install
 
 # LICENSE
 

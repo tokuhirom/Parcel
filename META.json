@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Yet another CPAN module dependency manager",
    "author" : [
       "tokuhirom <tokuhirom@gmail.com>"
    ],

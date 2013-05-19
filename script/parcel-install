@@ -47,9 +47,9 @@ parcel-install - Install modules
 
     % parcel install
         
-        --local         local library directory
-        --target        application directory
-        --local-mirror  local mirror directory 
+        --local=local/         local library directory
+        --target=.             application directory
+        --local-mirror=cpan/   local mirror directory 
 
 =head1 What?
 

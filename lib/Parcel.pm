@@ -9,15 +9,19 @@ __END__
 
 =head1 NAME
 
-Parcel - It's new $module
-
-=head1 SYNOPSIS
-
-    use Parcel;
+Parcel - Yet another CPAN module dependency manager
 
 =head1 DESCRIPTION
 
-Parcel is ...
+Yet another library manager for Perl applications.
+
+This distribution provides two scripts.
+
+=head1 parcel-index
+
+parcel-index creates 02.patcages.txt.gz file from cpanfile.
+
+=head1 parcel-install
 
 =head1 LICENSE
 
