@@ -7,6 +7,7 @@ use Parcel::Util;
 use File::Path;
 use File::Copy;
 use Parcel::Downloader;
+use File::Spec ();
 
 use Moo;
 
@@ -18,7 +19,7 @@ no Moo;
 sub do_index {
     my $self = shift;
 
-    if (-d $self->local_mirror) {
+    if (-f File::Spec->catfile($self->local_mirror, 'modules/02packages.details.txt.gz')) {
         $self->reindex();
     } else {
         $self->create_index();
