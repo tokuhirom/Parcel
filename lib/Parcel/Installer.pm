@@ -15,11 +15,16 @@ no Moo;
 sub install {
     my $self = shift;
 
+    my $pkgfile = catfile($self->local_mirror, 'modules/02packages.details.txt');
+    unless (-f $pkgfile) {
+        die "There is no '$pkgfile'\n";
+    }
     run(
         'cpanm',
         '--notest',
         '--no-man-pages',
         '--mirror-only',
+        '--mirror-index' => rel2abs($pkgfile),
         '--mirror' => 'file://' . rel2abs($self->local_mirror),
         '-L' => $self->local,
         '--installdeps',

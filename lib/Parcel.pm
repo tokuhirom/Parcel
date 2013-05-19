@@ -17,11 +17,7 @@ Yet another library manager for Perl applications.
 
 This distribution provides two scripts.
 
-=head1 parcel-index
-
-parcel-index creates 02.patcages.txt.gz file from cpanfile.
-
-=head1 parcel-install
+See L<parcel>
 
 =head1 LICENSE
 

@@ -1,26 +1,28 @@
-#!/usr/bin/env perl
+package Parcel::CLI::Install;
 use strict;
 use warnings;
 use utf8;
-
-use Getopt::Long;
-use File::Path;
-
 use Parcel;
 use Parcel::Installer;
 use Parcel::Downloader;
+use Getopt::Long;
 
-&main; exit;
+sub new {
+    my $class = shift;
+    bless {}, $class;
+}
 
-# Install packages from local mirror
-sub CMD_install {
+sub run {
+    my ($self, @args) = @_;
+
     my $local = 'local/';
     my $target = '.';
     my $local_mirror_dir = 'cpan/';
 
     Getopt::Long::Parser->new(
         config => [qw(posix_default no_ignore_case auto_help)]
-    )->getoptions(
+    )->getoptionsfromarray(
+        \@args,
         version => sub {
             print "Parcel: $Parcel::VERSION\n";
             exit 0;
@@ -31,11 +33,21 @@ sub CMD_install {
     );
 
     # Download tar balls
-    Parcel::Downloader->new(local_mirror => $local_mirror_dir)->download();
+    my $downloader = Parcel::Downloader->new(
+        local_mirror => $local_mirror_dir
+    );
+    $downloader->download();
 
     # And install it.
-    Parcel::Installer->new(local_mirror => $local_mirror_dir, target => $target, local => $local)->install();
+    my $installer = Parcel::Installer->new(
+        local_mirror => $local_mirror_dir,
+        target => $target,
+        local => $local
+    );
+    $installer->install();
 }
+
+1;
 
 __END__
 

@@ -1,16 +1,20 @@
-#!/usr/bin/env perl
+package Parcel::CLI::Index;
 use strict;
 use warnings;
 use utf8;
 
-use Getopt::Long;
-
 use Parcel;
 use Parcel::Indexer;
+use Getopt::Long;
 
-&main; exit;
+sub new {
+    my $class = shift;
+    bless {}, $class;
+}
 
-sub main {
+sub run {
+    my ($self, @args) = @_;
+
     my $local_mirror_dir = 'cpan';
     my $target = '.';
     Getopt::Long::Parser->new(
@@ -27,6 +31,7 @@ sub main {
     Parcel::Indexer->new(local_mirror => $local_mirror_dir, target => $target)->do_index();
 }
 
+1;
 __END__
 
 =head1 NAME
@@ -60,3 +65,4 @@ And put following contents to C<.gitattributes> or C<~/.config/git/attributes>.
     /02packages.details.txt.gz diff=gzcat
 
 =back
+

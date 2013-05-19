@@ -17,7 +17,11 @@ sub download {
 
 
     my @distributions = do {
-        my $p = Parse::CPAN::Packages->new(catfile($self->local_mirror, 'modules/02packages.details.txt.gz'));
+        my $pkgfile = catfile($self->local_mirror, 'modules/02packages.details.txt');
+        unless (-f $pkgfile) {
+            die "There is no $pkgfile\n";
+        }
+        my $p = Parse::CPAN::Packages->new($pkgfile);
         my @d = map { $_->prefix } $p->distributions;
         @d = grep { ! -f catfile($self->local_mirror, 'authors', 'id', $_) } @d;
         @d;

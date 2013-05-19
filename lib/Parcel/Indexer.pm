@@ -8,6 +8,7 @@ use File::Path;
 use File::Copy;
 use Parcel::Downloader;
 use File::Spec ();
+use OrePAN2::Indexer;
 
 use Moo;
 
@@ -32,7 +33,7 @@ sub create_index {
     $self->create_local_mirror($self->local_mirror);
 
     # And make index file
-    run 'orepan2-indexer', '--repository' => $self->local_mirror;
+    OrePAN2::Indexer->new(directory => $self->local_mirror)->make_index(no_compress => 1);
 }
 
 sub create_local_mirror {
@@ -63,7 +64,7 @@ sub reindex {
     # Create local mirror
     $self->create_local_mirror($new_mirror);
     # And make index file
-    run 'orepan2-indexer', '--repository' => $new_mirror;
+    OrePAN2::Indexer->new(directory => $new_mirror)->make_index(no_compress => 1);
 
     my $old_mirror = $self->local_mirror . '.old';
     rmtree $self->local_mirror;
