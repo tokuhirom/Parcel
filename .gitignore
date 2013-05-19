@@ -7,3 +7,9 @@
 /nytprof/
 /Build
 /cpan/
+/Parcel-*
+/.build
+/_build_params
+!Build/
+!META.json
+!LICENSE
