@@ -8,11 +8,7 @@ Yet another library manager for Perl applications.
 
 This distribution provides two scripts.
 
-# parcel-index
-
-parcel-index creates 02.patcages.txt.gz file from cpanfile.
-
-# parcel-install
+See [parcel](http://search.cpan.org/perldoc?parcel)
 
 # LICENSE
 

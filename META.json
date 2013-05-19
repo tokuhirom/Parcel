@@ -46,7 +46,7 @@
             "File::Temp" : "0",
             "Getopt::Long" : "0",
             "Moo" : "0",
-            "OrePAN2" : "0",
+            "OrePAN2" : "0.03",
             "Parse::CPAN::Packages" : "0",
             "parent" : "0",
             "perl" : "5.008005"
@@ -54,6 +54,7 @@
       },
       "test" : {
          "requires" : {
+            "File::pushd" : "0",
             "Test::More" : "0.98"
          }
       }
