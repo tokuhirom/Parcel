@@ -7,12 +7,18 @@ use parent qw(Exporter);
 use File::Spec::Functions qw(catfile rel2abs);
 use File::Temp qw(tempdir);
 
-our @EXPORT = qw(tempdir catfile rel2abs run find_02packages);
+our @EXPORT = qw(run_funny tempdir catfile rel2abs run find_02packages);
 
 sub run {
     my @args = @_;
     print "[run] @args\n";
     system(@args) == 0 or exit 1;
+}
+
+sub run_funny {
+    my @args = @_;
+    print "[run] @args\n";
+    system(@args);
 }
 
 sub find_02packages {

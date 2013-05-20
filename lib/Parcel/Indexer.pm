@@ -26,7 +26,7 @@ sub do_index {
 sub cpanm_install {
     my ($self, @args) = @_;
 
-    run
+    run_funny
         'cpanm',
         '--notest',
         '--no-man-pages',
@@ -62,7 +62,7 @@ sub reindex {
         '--mirror' => 'http://backpan.perl.org/',
         '--save-dists' => $new_mirror,
         '-L' => $tmpdir,
-    );
+    )==0 or die "BAIL OUT\n";
 
     # And make index file
     my $indexer = OrePAN2::Indexer->new(directory => $new_mirror);

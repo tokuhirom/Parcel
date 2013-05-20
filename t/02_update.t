@@ -42,6 +42,21 @@ requires 'Acme::Hoge';
     unlike $pkg, qr{M/MA/MAHITO/Acme-Hoge-0.03.tar.gz};
 }
 
+{
+    open my $fh, '>', 'cpanfile' or die;
+    print $fh <<'...';
+requires 'Acme::Hoge', 0.03;
+...
+}
+
+{
+    is(system($^X, "-I$libdir", $parcel, 'index'), 0);
+    my $pkg = slurp('cpan/modules/02packages.details.txt');
+    note $pkg;
+    like $pkg, qr{M/MA/MAHITO/Acme-Hoge-0.03.tar.gz};
+    unlike $pkg, qr{M/MA/MAHITO/Acme-Hoge-0.02.tar.gz};
+}
+
 done_testing;
 
 sub slurp {
