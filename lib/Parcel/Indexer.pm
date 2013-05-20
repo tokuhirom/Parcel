@@ -20,36 +20,18 @@ no Moo;
 sub do_index {
     my $self = shift;
 
-    if (-f File::Spec->catfile($self->local_mirror, 'modules/02packages.details.txt')) {
-        $self->reindex();
-    } else {
-        $self->create_index();
-    }
+    $self->reindex();
 }
 
-sub create_index {
-    my $self = shift;
+sub cpanm_install {
+    my ($self, @args) = @_;
 
-    $self->create_local_mirror($self->local_mirror);
-
-    # And make index file
-    OrePAN2::Indexer->new(directory => $self->local_mirror)->make_index(no_compress => 1);
-}
-
-sub create_local_mirror {
-    my ($self, $save_dists) = @_;
-
-    my $tmpdir = tempdir(CLEANUP => 1);
     run
         'cpanm',
         '--notest',
         '--no-man-pages',
-        '--mirror' => 'file://' . rel2abs($self->local_mirror),
-        '--mirror' => 'http://cpan.metacpan.org/',
-        '--mirror' => 'http://backpan.perl.org/',
+        @args,
         '--no-skip-satisfied',
-        '-L' => $tmpdir,
-        '--save-dists' => $save_dists,
         '--installdeps' => $self->target,
     ;
 }
@@ -57,14 +39,34 @@ sub create_local_mirror {
 sub reindex {
     my $self = shift;
 
-    Parcel::Downloader->new(local_mirror => $self->local_mirror)->download();
-
+    my $pkgfile = catfile($self->local_mirror, 'modules/02packages.details.txt');
+    my $tmpdir = tempdir(CLEANUP => 0);
     my $new_mirror = $self->local_mirror . '.new';
 
-    # Create local mirror
-    $self->create_local_mirror($new_mirror);
+    # Install from existed parcel repo first.
+    if (-f $pkgfile) {
+        Parcel::Downloader->new(local_mirror => $self->local_mirror)->download();
+
+        $self->cpanm_install(
+            '--mirror-only',
+            '--mirror-index' => rel2abs($pkgfile),
+            '--mirror' => 'file://' . rel2abs($self->local_mirror),
+            '--save-dists' => $new_mirror,
+            '-L' => $tmpdir,
+        );
+    }
+    $self->cpanm_install(
+        '--mirror-only',
+        '--mirror' => 'file://' . rel2abs($self->local_mirror),
+        '--mirror' => 'http://cpan.metacpan.org/',
+        '--mirror' => 'http://backpan.perl.org/',
+        '--save-dists' => $new_mirror,
+        '-L' => $tmpdir,
+    );
+
     # And make index file
-    OrePAN2::Indexer->new(directory => $new_mirror)->make_index(no_compress => 1);
+    my $indexer = OrePAN2::Indexer->new(directory => $new_mirror);
+    $indexer->make_index(no_compress => 1);
 
     my $old_mirror = $self->local_mirror . '.old';
     rmtree $self->local_mirror;

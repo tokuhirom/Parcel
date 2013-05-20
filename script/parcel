@@ -20,3 +20,4 @@ __END__
     # Run the script under the Parcel environment
     % parcel exec -Ilib -- perl script/foo
 
+=head1 HOW IT WORKS
